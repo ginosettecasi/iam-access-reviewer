@@ -1,7 +1,25 @@
-# Create the project folder and navigate into it
-mkdir iam-access-reviewer
-cd iam-access-reviewer
+name: IAM Audit
 
-# Create the folder structure
-mkdir config reports .github
-mkdir .github/workflows
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run IAM Audit (Simulated Forgerock)
+        run: python iam_audit.py --provider forgerock
