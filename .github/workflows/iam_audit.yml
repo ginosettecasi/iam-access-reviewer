@@ -11,6 +11,10 @@ on:
 jobs:
   audit:
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
     strategy:
       matrix:
         provider: [ forgerock, aws ]
@@ -42,17 +46,11 @@ jobs:
           flake8 .
 
       - name: Run IAM Audit for ${{ matrix.provider }}
+        if: ${{ matrix.provider != 'aws' || (env.AWS_ACCESS_KEY_ID && env.AWS_SECRET_ACCESS_KEY && env.AWS_DEFAULT_REGION) }}
         run: python iam_audit.py --provider ${{ matrix.provider }}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-        # Only run AWS audit if credentials are set, otherwise always run simulated forgerock
-        if: ${{ matrix.provider != 'aws' || (secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY && secrets.AWS_DEFAULT_REGION) }}
 
       - name: Rename Audit Report to Static File
         run: |
-          # If a report file matching the pattern exists, remove any existing static report and rename it.
           if ls reports/iam_report_*.txt 1> /dev/null 2>&1; then
             rm -f reports/iam_report.txt
             mv reports/iam_report_*.txt reports/iam_report.txt
