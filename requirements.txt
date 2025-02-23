@@ -1,0 +1,5 @@
+boto3
+ldap3
+requests
+jinja2
+pyyaml
