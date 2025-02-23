@@ -12,7 +12,7 @@ The tool generates a comprehensive report for quick review and is integrated wit
 - **Automated Access Reviews:** Scans AWS IAM users.
 - **Compliance Checks:** Verifies MFA configuration, account activity, and excessive privileges.
 - **Report Generation:** Outputs an audit report in a human-readable format.
-- **CI/CD Integration:** Runs automatically via GitHub Actions on every push or on a schedule.
+- **CI/CD Integration:** Runs automatically via GitHub Actions on every push or on a daily schedule.
 
 ## Technologies
 - **Python** for core logic.
