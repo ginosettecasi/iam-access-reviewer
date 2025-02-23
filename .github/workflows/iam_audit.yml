@@ -1,0 +1,7 @@
+# Create the project folder and navigate into it
+mkdir iam-access-reviewer
+cd iam-access-reviewer
+
+# Create the folder structure
+mkdir config reports .github
+mkdir .github/workflows
