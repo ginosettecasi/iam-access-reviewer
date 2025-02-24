@@ -7,17 +7,28 @@ import argparse
 import logging
 from utils import check_user_compliance, generate_report
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
+
 
 def load_config(config_file):
     with open(config_file, 'r') as f:
         return json.load(f)
 
+
 def main():
-    parser = argparse.ArgumentParser(description="IAM Access Reviewer & Compliance Auditor")
-    parser.add_argument("--provider", required=True, help="IAM provider to audit (aws, forgerock, ldap)")
+    parser = argparse.ArgumentParser(
+        description="IAM Access Reviewer & Compliance Auditor"
+    )
+    parser.add_argument(
+        "--provider",
+        required=True,
+        help="IAM provider to audit (aws, forgerock, ldap)"
+    )
     args = parser.parse_args()
 
     provider = args.provider.lower()
@@ -34,7 +45,9 @@ def main():
         users = response.get("Users", [])
 
         for user in users:
-            user_issues = check_user_compliance(iam_client, user, stale_threshold_days)
+            user_issues = check_user_compliance(
+                iam_client, user, stale_threshold_days
+            )
             if user_issues:
                 issues.append({
                     "user": user["UserName"],
@@ -65,11 +78,18 @@ def main():
                     "severity": "Critical",
                     "recommendation": "Enable MFA for all users immediately."
                 })
-            last_login_date = datetime.datetime.strptime(user["LastLogin"], "%Y-%m-%d")
-            days_since_last_login = (datetime.datetime.utcnow() - last_login_date).days
+            last_login_date = datetime.datetime.strptime(
+                user["LastLogin"], "%Y-%m-%d"
+            )
+            days_since_last_login = (
+                datetime.datetime.utcnow() - last_login_date
+            ).days
             if days_since_last_login > 30:
                 user_issues.append({
-                    "message": f"Stale account (last login {days_since_last_login} days ago)",
+                    "message": (
+                        f"Stale account (last login {days_since_last_login} "
+                        "days ago)"
+                    ),
                     "severity": "Warning",
                     "recommendation": "Prompt a password update."
                 })
@@ -77,7 +97,9 @@ def main():
                 user_issues.append({
                     "message": "User has admin privileges",
                     "severity": "Critical",
-                    "recommendation": "Review the necessity of admin rights."
+                    "recommendation": (
+                        "Review the necessity of admin rights."
+                    )
                 })
             if user_issues:
                 issues.append({
@@ -107,11 +129,17 @@ def main():
                     "severity": "Critical",
                     "recommendation": "Enforce stronger password policies."
                 })
-            last_change_date = datetime.datetime.strptime(user["LastChange"], "%Y-%m-%d")
-            days_since_change = (datetime.datetime.utcnow() - last_change_date).days
+            last_change_date = datetime.datetime.strptime(
+                user["LastChange"], "%Y-%m-%d"
+            )
+            days_since_change = (
+                datetime.datetime.utcnow() - last_change_date
+            ).days
             if days_since_change > 90:
                 user_issues.append({
-                    "message": f"Password last changed {days_since_change} days ago",
+                    "message": (
+                        f"Password last changed {days_since_change} days ago"
+                    ),
                     "severity": "Warning",
                     "recommendation": "Prompt a password update."
                 })
@@ -133,6 +161,7 @@ def main():
 
     logger.info(f"IAM Audit Report generated: {report_filename}")
     logger.info(report_content)
+
 
 if __name__ == "__main__":
     main()
