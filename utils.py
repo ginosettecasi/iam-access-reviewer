@@ -46,7 +46,8 @@ def check_user_compliance(iam_client, user, stale_threshold_days):
         if days_since_last_used > stale_threshold_days:
             issues.append({
                 "message": (
-                    f"Stale account (last used {days_since_last_used} days ago)"
+                    f"Stale account (last used "
+                    f"{days_since_last_used} days ago)"
                 ),
                 "severity": "Warning",
                 "recommendation": (
@@ -70,9 +71,7 @@ def check_user_compliance(iam_client, user, stale_threshold_days):
             issues.append({
                 "message": "User has AdministratorAccess policy",
                 "severity": "Critical",
-                "recommendation": (
-                    "Review the necessity of admin privileges."
-                )
+                "recommendation": "Review the necessity of admin privileges."
             })
             break
 
