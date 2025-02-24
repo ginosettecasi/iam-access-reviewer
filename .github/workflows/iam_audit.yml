@@ -24,8 +24,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run Lint Checks
+        run: flake8 .
+
+      - name: Run Unit Tests
+        run: |
+          pip install pytest
+          pytest --maxfail=1 --disable-warnings -q
+
       - name: Run IAM Audit (Simulated Forgerock)
         run: python iam_audit.py --provider forgerock
+
+      - name: Check for Critical Issues
+        run: |
+          if grep -q "Critical" reports/iam_report_*.txt; then
+            echo "Critical issues found! Please review the report.";
+          else
+            echo "No critical issues found.";
+          fi
 
       - name: Upload Report Artifact
         uses: actions/upload-artifact@v4
