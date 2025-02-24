@@ -87,15 +87,6 @@ IAM Access Review Report (Generated: 2025-02-23)
 ✅ Compliance Status: PCI DSS ✅ | ISO 27001 ❌ (MFA Policy Violation)
 ```
 
-## Why This Project is Relevant for Visa
-
-Visa requires **senior IAM security engineers** with expertise in **identity governance, access control enforcement, and security automation**. This project directly aligns with Visa’s security needs, showcasing:
-
-- **Proficiency in IAM security auditing, compliance monitoring, and access governance.**
-- **Hands-on experience in AWS IAM security and ForgeRock authentication integration.**
-- **Ability to build scalable, automated IAM compliance solutions using CI/CD.**
-- **Expertise in mitigating identity-based security risks through automation.**
-
 This project **demonstrates real-world security automation skills**, making it a valuable addition to an **enterprise IAM security framework**.
 
 ## GitHub Repository
