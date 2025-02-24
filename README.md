@@ -23,3 +23,16 @@ The tool checks for issues such as missing MFA, stale accounts, weak password po
    ```bash
    git clone https://github.com/yourusername/iam-access-reviewer.git
    cd iam-access-reviewer
+2. **Install dependencies:**
+   ```bash
+   Copy
+   pip install -r requirements.txt
+3. **Run an audit:**
+For AWS (ensure your AWS credentials are set):
+   ```bash
+   Copy
+   python iam_audit.py --provider aws
+For simulated ForgeRock:
+   ```bash
+   Copy
+   python iam_audit.py --provider forgerock
