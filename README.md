@@ -1,38 +1,110 @@
 # IAM Access Reviewer & Compliance Auditor
 
 ## Overview
-This project automates IAM user access reviews and compliance audits. It supports multiple providers:
-- **AWS IAM** (real integration)
-- **ForgeRock** (simulated)
-- **LDAP** (simulated)
 
-The tool checks for issues such as missing MFA, stale accounts, weak password policies, and excessive privileges. It generates a detailed report that includes severity levels and recommendations for remediation.
+The **IAM Access Reviewer & Compliance Auditor** is a security automation tool that simplifies **user access reviews** and ensures **compliance with industry standards** such as **PCI DSS, ISO 27001, and FedRAMP**. It provides structured IAM audits across **AWS IAM, ForgeRock, and LDAP environments**, detecting excessive permissions, inactive accounts, and security misconfigurations.
 
-## Features
-- **Multi-Provider Support:** AWS, simulated ForgeRock, and LDAP.
-- **Rich Reporting:** Issues include severity (Critical/Warning) and remediation recommendations.
-- **Automated Testing & Linting:** Uses Pytest and Flake8 to ensure code quality.
-- **Logging:** Built-in logging for troubleshooting.
-- **CI/CD with GitHub Actions:** Automated audit runs and artifact uploads.
-- **Artifact Uploads:** Audit reports are saved as artifacts for review.
+This project demonstrates a **real-world enterprise IAM security solution**, aligning with **Visa’s security automation needs** and showcasing expertise in **IAM governance, compliance enforcement, and security engineering**.
 
-## Setup & Usage
+## Key Features
 
-### Running Locally
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/iam-access-reviewer.git
-   cd iam-access-reviewer
-2. **Install dependencies:**
-   ```bash
-   Copy
-   pip install -r requirements.txt
-3. **Run an audit:**
-For AWS (ensure your AWS credentials are set):
-   ```bash
-   Copy
-   python iam_audit.py --provider aws
-For simulated ForgeRock:
-   ```bash
-   Copy
-   python iam_audit.py --provider forgerock
+- **Multi-Provider Support** – Integrates with **AWS IAM (real implementation)** and simulates **ForgeRock & LDAP** to demonstrate cross-platform IAM security automation.
+- **Automated IAM Audits** – Identifies **excessive privileges, missing MFA, and inactive accounts** to mitigate security risks.
+- **Regulatory Compliance Enforcement** – Validates IAM configurations against **PCI DSS, ISO 27001, and least privilege policies**.
+- **Comprehensive Reporting** – Generates **structured audit reports** with **severity levels and remediation recommendations**.
+- **CI/CD Integration with GitHub Actions** – Automates IAM security audits on every commit, ensuring **continuous compliance monitoring**.
+- **Test-Driven Development (TDD)** – Uses **Pytest-based unit tests** to maintain audit accuracy and ensure code reliability.
+
+## How It Works
+
+1. **Collects IAM user data** from **AWS, ForgeRock, or LDAP**.
+2. **Analyzes permissions and access levels** to detect **overprivileged users and inactive accounts**.
+3. **Performs compliance checks** based on **PCI DSS, ISO 27001, and least privilege policies**.
+4. **Generates a structured IAM audit report** detailing security risks and recommended remediation actions.
+5. **Runs continuously via GitHub Actions**, ensuring that IAM security remains **up-to-date and aligned with compliance frameworks**.
+
+## GitHub Actions Integration
+
+This project is fully **automated** using **GitHub Actions**, enabling a streamlined IAM audit pipeline. Every **code commit** automatically triggers:
+
+- **Unit Testing with Pytest** – Ensures compliance validation accuracy.
+- **IAM Audit Execution** – Fetches user data and applies IAM security checks.
+- **Audit Report Generation & Upload** – Stores security reports as artifacts for review.
+
+By leveraging **CI/CD best practices**, this automation reduces **manual IAM security overhead** and provides **real-time compliance enforcement**.
+
+## Installation & Usage
+
+### **1. Clone the Repository**
+```bash
+git clone https://github.com/ginosettecasi/iam-access-reviewer.git
+cd iam-access-reviewer
+```
+
+### **2. Install Dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+### **3. Run an IAM Audit**
+- **For AWS IAM (Requires AWS Credentials):**
+  ```bash
+  python iam_audit.py --provider aws
+  ```
+- **For Simulated ForgeRock:**
+  ```bash
+  python iam_audit.py --provider forgerock
+  ```
+- **For Simulated LDAP:**
+  ```bash
+  python iam_audit.py --provider ldap
+  ```
+
+### **4. View Audit Reports**
+The tool generates an IAM security audit report in the `reports/` directory:
+```bash
+cat reports/iam_report_YYYY-MM-DD.txt
+```
+
+## Example Audit Report Output
+```
+IAM Access Review Report (Generated: 2025-02-23)
+
+⚠️ 3 Issues Found:
+------------------------------------
+1️⃣ User: JohnDoe (AWS IAM)
+   - ❌ Admin privileges assigned but user role is "Support"
+   - 🔥 Recommended: Downgrade to appropriate least privilege access
+
+2️⃣ User: JaneAdmin (ForgeRock)
+   - ❌ No Multi-Factor Authentication (MFA) enabled
+   - 🔥 Recommended: Enforce MFA through ForgeRock policy
+
+3️⃣ User: test_user (LDAP)
+   - ❌ Last login: 380 days ago (Inactive Account)
+   - 🔥 Recommended: Disable or review account activity justification
+
+✅ Compliance Status: PCI DSS ✅ | ISO 27001 ❌ (MFA Policy Violation)
+```
+
+## Why This Project is Relevant for Visa
+
+Visa requires **senior IAM security engineers** with expertise in **identity governance, access control enforcement, and security automation**. This project directly aligns with Visa’s security needs, showcasing:
+
+- **Proficiency in IAM security auditing, compliance monitoring, and access governance.**
+- **Hands-on experience in AWS IAM security and ForgeRock authentication integration.**
+- **Ability to build scalable, automated IAM compliance solutions using CI/CD.**
+- **Expertise in mitigating identity-based security risks through automation.**
+
+This project **demonstrates real-world security automation skills**, making it a valuable addition to an **enterprise IAM security framework**.
+
+## GitHub Repository
+
+Full source code, setup instructions, and workflow automation details can be found here:  
+**[GitHub Repository: IAM Access Reviewer & Compliance Auditor](https://github.com/ginosettecasi/iam-access-reviewer)**
+
+## License
+
+This project is licensed under the **MIT License**.
+
+---
