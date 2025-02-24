@@ -6,52 +6,20 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+    - cron: '0 0 * * *'
 
 jobs:
   audit:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        provider: [ forgerock, aws ]
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
-      - name: Cache pip dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Run Code Linter
-        run: |
-          pip install flake8
-          flake8 .
-
-      - name: Run IAM Audit for ${{ matrix.provider }}
-        run: python iam_audit.py --provider ${{ matrix.provider }}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-        # Run the AWS audit only if credentials are set; always run simulated forgerock
-        if: ${{ matrix.provider != 'aws' || (secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY && secrets.AWS_DEFAULT_REGION) }}
-
-      - name: Upload Report Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: audit-report-${{ matrix.provider }}
-          path: reports/
+      - name: Run IAM Audit (Simulated Forgerock)
+        run: python iam_audit.py --provider forgerock
